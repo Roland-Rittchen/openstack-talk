@@ -1,0 +1,8 @@
+# Verify these catalog values; the builder needs outbound access and SSH from your workstation.
+cloud                 = "scs"
+source_image_name     = "Ubuntu 24.04"
+flavor                = "SCS-2V-4-20s"
+external_network_name = "external"
+availability_zone     = "az1"
+security_groups       = ["REPLACE_BUILD_SECURITY_GROUP"]
+network_id            = "REPLACE_BUILD_NETWORK_ID"

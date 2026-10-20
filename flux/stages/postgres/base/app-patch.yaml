@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo
+  namespace: demo
+spec:
+  template:
+    spec:
+      imagePullSecrets:
+        - name: demo-image-pull
+      containers:
+        - name: demo
+          image: ${POSTGRES_DEMO_IMAGE}
+          env:
+            - {name: DATABASE_BACKEND, value: postgres}
+            - {name: PGHOST, value: demo-db-rw}
+            - {name: PGDATABASE, value: demo}
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef: {name: demo-db-app, key: username}
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef: {name: demo-db-app, key: password}
+            - {name: PGSSLMODE, value: verify-full}
+            - {name: PGSSLROOTCERT, value: /database-ca/ca.crt}
+          volumeMounts:
+            - {name: database-ca, mountPath: /database-ca, readOnly: true}
+      volumes:
+        - name: database-ca
+          secret:
+            secretName: demo-db-ca

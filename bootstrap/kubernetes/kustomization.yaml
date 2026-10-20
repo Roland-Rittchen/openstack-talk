@@ -1,0 +1,5 @@
+# Operator installation is a separate reconciliation, before PostgreSQL resources.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - database-operators.yaml

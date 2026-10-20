@@ -1,0 +1,147 @@
+apiVersion: cluster.x-k8s.io/v1beta2
+kind: Cluster
+metadata:
+  name: ${CLUSTER_NAME}
+spec:
+  paused: true
+  clusterNetwork:
+    pods:
+      cidrBlocks: [10.244.0.0/16]
+    services:
+      cidrBlocks: [10.96.0.0/12]
+    serviceDomain: cluster.local
+  controlPlaneRef:
+    apiGroup: controlplane.cluster.x-k8s.io
+    kind: KubeadmControlPlane
+    name: ${CLUSTER_NAME}-control-plane
+  infrastructureRef:
+    apiGroup: infrastructure.cluster.x-k8s.io
+    kind: OpenStackCluster
+    name: ${CLUSTER_NAME}
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+kind: OpenStackCluster
+metadata:
+  name: ${CLUSTER_NAME}
+spec:
+  identityRef:
+    name: ${CLUSTER_NAME}-cloud-config
+    cloudName: ${CLOUD_NAME}
+  externalNetwork:
+    id: ${EXTERNAL_NETWORK_ID}
+  network:
+    id: ${NETWORK_ID}
+  subnets:
+    - id: ${SUBNET_ID}
+  # Let the cloud choose; patch placement explicitly if your deployment needs an AZ.
+  controlPlaneOmitAvailabilityZone: true
+  # No managed network/router/security groups: OpenTofu remains their owner.
+  apiServer:
+    enableFloatingIP: true
+    managedLoadBalancer:
+      enabled: true
+      allowedCIDRs: ${API_SERVER_ALLOWED_CIDRS}
+---
+apiVersion: controlplane.cluster.x-k8s.io/v1beta2
+kind: KubeadmControlPlane
+metadata:
+  name: ${CLUSTER_NAME}-control-plane
+spec:
+  replicas: 1
+  version: ${KUBERNETES_VERSION}
+  machineTemplate:
+    spec:
+      infrastructureRef:
+        apiGroup: infrastructure.cluster.x-k8s.io
+        kind: OpenStackMachineTemplate
+        name: ${CLUSTER_NAME}-control-plane
+  kubeadmConfigSpec:
+    preKubeadmCommands:
+      - systemctl enable --now containerd kubelet
+      - update-ca-certificates
+      - test "$(kubeadm version -o short)" = ${KUBERNETES_VERSION}
+    initConfiguration:
+      nodeRegistration:
+        name: '{{ local_hostname }}'
+        kubeletExtraArgs:
+          - {name: cloud-provider, value: external}
+          - {name: provider-id, value: "openstack:///'{{ instance_id }}'"}
+    joinConfiguration:
+      nodeRegistration:
+        name: '{{ local_hostname }}'
+        kubeletExtraArgs:
+          - {name: cloud-provider, value: external}
+          - {name: provider-id, value: "openstack:///'{{ instance_id }}'"}
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+kind: OpenStackMachineTemplate
+metadata:
+  name: ${CLUSTER_NAME}-control-plane
+spec:
+  template:
+    spec:
+      flavor:
+        filter:
+          name: ${CONTROL_PLANE_FLAVOR}
+      image:
+        id: ${IMAGE_ID}
+      sshKeyName: ${SSH_KEY_NAME}
+      securityGroups:
+        - id: ${CONTROL_PLANE_SECURITY_GROUP_ID}
+---
+apiVersion: cluster.x-k8s.io/v1beta2
+kind: MachineDeployment
+metadata:
+  name: ${CLUSTER_NAME}-workers
+spec:
+  clusterName: ${CLUSTER_NAME}
+  replicas: 1
+  selector:
+    matchLabels: {}
+  template:
+    spec:
+      clusterName: ${CLUSTER_NAME}
+      version: ${KUBERNETES_VERSION}
+      bootstrap:
+        configRef:
+          apiGroup: bootstrap.cluster.x-k8s.io
+          kind: KubeadmConfigTemplate
+          name: ${CLUSTER_NAME}-workers
+      infrastructureRef:
+        apiGroup: infrastructure.cluster.x-k8s.io
+        kind: OpenStackMachineTemplate
+        name: ${CLUSTER_NAME}-workers
+---
+apiVersion: bootstrap.cluster.x-k8s.io/v1beta2
+kind: KubeadmConfigTemplate
+metadata:
+  name: ${CLUSTER_NAME}-workers
+spec:
+  template:
+    spec:
+      preKubeadmCommands:
+        - systemctl enable --now containerd kubelet
+        - update-ca-certificates
+        - test "$(kubeadm version -o short)" = ${KUBERNETES_VERSION}
+      joinConfiguration:
+        nodeRegistration:
+          name: '{{ local_hostname }}'
+          kubeletExtraArgs:
+            - {name: cloud-provider, value: external}
+            - {name: provider-id, value: "openstack:///'{{ instance_id }}'"}
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+kind: OpenStackMachineTemplate
+metadata:
+  name: ${CLUSTER_NAME}-workers
+spec:
+  template:
+    spec:
+      flavor:
+        filter:
+          name: ${WORKER_FLAVOR}
+      image:
+        id: ${IMAGE_ID}
+      sshKeyName: ${SSH_KEY_NAME}
+      securityGroups:
+        - id: ${WORKER_SECURITY_GROUP_ID}

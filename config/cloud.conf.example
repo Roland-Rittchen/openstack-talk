@@ -1,0 +1,14 @@
+# Copy to cloud.conf (ignored). This is the CCM's INI format, not CAPO clouds.yaml.
+[Global]
+auth-url = "REPLACE_KEYSTONE_V3_URL"
+application-credential-id = "REPLACE_APPLICATION_CREDENTIAL_ID"
+application-credential-secret = "REPLACE_APPLICATION_CREDENTIAL_SECRET"
+region = "REPLACE_REGION"
+# For a private CA, add ca.crt to the cloud-config Secret and enable this:
+# ca-file = "/etc/kubernetes/ca.crt"
+
+[LoadBalancer]
+use-octavia = true
+subnet-id = "REPLACE_SUBNET_ID"
+floating-network-id = "REPLACE_EXTERNAL_NETWORK_ID"
+manage-security-groups = false

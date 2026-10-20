@@ -1,0 +1,86 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: openstack-cloud-controller-manager
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: openstack-cloud-controller-manager
+rules:
+  - apiGroups: ['']
+    resources: [nodes, nodes/status, services, services/status, services/finalizers, events, endpoints, configmaps]
+    verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: [coordination.k8s.io]
+    resources: [leases]
+    verbs: [get, list, watch, create, update, patch]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: openstack-cloud-controller-manager
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: openstack-cloud-controller-manager
+subjects:
+  - kind: ServiceAccount
+    name: openstack-cloud-controller-manager
+    namespace: kube-system
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: openstack-cloud-controller-manager
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app: openstack-cloud-controller-manager
+  template:
+    metadata:
+      labels:
+        app: openstack-cloud-controller-manager
+    spec:
+      serviceAccountName: openstack-cloud-controller-manager
+      hostNetwork: true
+      # This controller must initialize the node before cluster DNS can schedule.
+      dnsPolicy: Default
+      tolerations:
+        - operator: Exists
+          effect: NoSchedule
+        - operator: Exists
+          effect: NoExecute
+      containers:
+        - name: controller
+          image: ${CLOUD_CONTROLLER_IMAGE}
+          command: [/bin/openstack-cloud-controller-manager]
+          args:
+            - --cloud-provider=openstack
+            - --cloud-config=/etc/kubernetes/cloud.conf
+            - --controllers=${CLOUD_CONTROLLERS}
+            # Unique per workload cluster: prevents adopting another cluster's LBs.
+            - --cluster-name=${CLUSTER_NAME}
+            - --v=2
+          env:
+            # Bootstrap before kube-proxy has a working Service VIP. Refresh after
+            # replacing the single control-plane node; use its private API address.
+            - name: KUBERNETES_SERVICE_HOST
+              value: ${CONTROL_PLANE_PRIVATE_IP}
+            - name: KUBERNETES_SERVICE_PORT
+              value: '6443'
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              memory: 512Mi
+          volumeMounts:
+            - name: cloud-config
+              mountPath: /etc/kubernetes
+              readOnly: true
+      volumes:
+        - name: cloud-config
+          secret:
+            secretName: cloud-config

@@ -1,0 +1,77 @@
+{
+  "orc": {
+    "url": "https://github.com/k-orc/openstack-resource-controller/releases/download/v2.6.0/install.yaml",
+    "filename": "orc-install.yaml",
+    "sha256": "affe57ece8c81001d4dacd35fe3bd5bf35662ed6b5c4b1da59f334c685bba109"
+  },
+  "flannel": {
+    "url": "https://github.com/flannel-io/flannel/releases/download/v0.28.10/kube-flannel.yml",
+    "filename": "flannel.yaml",
+    "sha256": "393bdbce53eb50c8eb97dd513b218518b7d6e7985dc7b889be956e112a711084"
+  },
+  "local-path": {
+    "url": "https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.37/deploy/local-path-storage.yaml",
+    "filename": "local-path.yaml",
+    "sha256": "9781b39c24f3f651bd6d6e41b561e04e4904bbdb6d4f8c7a6009df3a702dcd65"
+  },
+  "capo-schema": {
+    "url": "https://github.com/kubernetes-sigs/cluster-api-provider-openstack/releases/download/v0.15.0/infrastructure-components.yaml",
+    "filename": "capo-components.yaml",
+    "sha256": "3935869a07aefd038a0c77ca23819759e6fa0afd273e6091e8a3c6bdb96d7d40"
+  },
+  "capi-core-schema": {
+    "url": "https://github.com/kubernetes-sigs/cluster-api/releases/download/v1.14.3/core-components.yaml",
+    "filename": "capi-core.yaml",
+    "sha256": "f70be959af4aba061b91cb264b3b1961ae38ca49e2eb542ccf2640146f5221a7"
+  },
+  "capi-bootstrap-schema": {
+    "url": "https://github.com/kubernetes-sigs/cluster-api/releases/download/v1.14.3/bootstrap-components.yaml",
+    "filename": "capi-bootstrap.yaml",
+    "sha256": "537d6db3b70aad723710825f76073659865dc1a115715ef5d5c470da3b9bcc39"
+  },
+  "capi-control-plane-schema": {
+    "url": "https://github.com/kubernetes-sigs/cluster-api/releases/download/v1.14.3/control-plane-components.yaml",
+    "filename": "capi-control-plane.yaml",
+    "sha256": "a211e2e54b6b6fb93e59191f5db8ee76ad6ff92a698f1c62f9d6ce4d5218cf87"
+  },
+  "database-schema": {
+    "url": "https://github.com/cloudnative-pg/cloudnative-pg/releases/download/v1.30.1/cnpg-1.30.1.yaml",
+    "filename": "cnpg-manifest.yaml",
+    "sha256": "37237f145d8138256ea25ae830f87759255665ff08f8d552fdd8224a5ec032fb"
+  },
+  "backup-schema": {
+    "url": "https://github.com/cloudnative-pg/plugin-barman-cloud/releases/download/v0.15.1/manifest.yaml",
+    "filename": "barman-manifest.yaml",
+    "sha256": "8f377ff4a7d0d3f74fc64b0f7ac4f449fc38ca9e83a40107cca2f9315a9bd920"
+  },
+  "clusterctl-darwin-amd64": {
+    "url": "https://github.com/kubernetes-sigs/cluster-api/releases/download/v1.14.3/clusterctl-darwin-amd64",
+    "filename": "clusterctl-darwin-amd64",
+    "sha256": "decec263200ff5790593fcff64a0f9d42799410b91b1e23c86ec1437607bb1fd"
+  },
+  "clusterctl-darwin-arm64": {
+    "url": "https://github.com/kubernetes-sigs/cluster-api/releases/download/v1.14.3/clusterctl-darwin-arm64",
+    "filename": "clusterctl-darwin-arm64",
+    "sha256": "5915523f13949884d29d5254445b8d294ba314b5dacb3e8eff9e42f1c9d2e684"
+  },
+  "clusterctl-linux-amd64": {
+    "url": "https://github.com/kubernetes-sigs/cluster-api/releases/download/v1.14.3/clusterctl-linux-amd64",
+    "filename": "clusterctl-linux-amd64",
+    "sha256": "e56f397f55c6fdde6ee8c0fead4fb21270a50e05111180bf68c8ae6c82dfd917"
+  },
+  "clusterctl-linux-arm64": {
+    "url": "https://github.com/kubernetes-sigs/cluster-api/releases/download/v1.14.3/clusterctl-linux-arm64",
+    "filename": "clusterctl-linux-arm64",
+    "sha256": "eea3a3ecc64ae155c57eea35378d833285a92cb549c3298a18765bc40a7a3f7b"
+  },
+  "clusterctl-linux-ppc64le": {
+    "url": "https://github.com/kubernetes-sigs/cluster-api/releases/download/v1.14.3/clusterctl-linux-ppc64le",
+    "filename": "clusterctl-linux-ppc64le",
+    "sha256": "64c0059aae00eee8dd65c75a894b9a8a3f5c068f4e3b3e6f9a6ad5a1406cf636"
+  },
+  "clusterctl-windows-amd64.exe": {
+    "url": "https://github.com/kubernetes-sigs/cluster-api/releases/download/v1.14.3/clusterctl-windows-amd64.exe",
+    "filename": "clusterctl-windows-amd64.exe",
+    "sha256": "f37f9ccd9a9ab8f5eda0b3fbeb57a4a461dbc254426818b9995adce6a076a722"
+  }
+}

@@ -1,0 +1,8 @@
+# Verify these catalog values; the builder needs outbound access and SSH from your workstation.
+cloud                 = "local"
+source_image_name     = "Ubuntu 24.04"
+flavor                = "m1.small"
+external_network_name = "public"
+availability_zone     = ""
+security_groups       = ["REPLACE_BUILD_SECURITY_GROUP"]
+network_id            = "REPLACE_BUILD_NETWORK_ID"

@@ -1,0 +1,16 @@
+flavors = {
+  control_plane = { name = "m1.small", vcpus = 2, ram_mib = 4096, disk_gib = 20 }
+  worker        = { name = "m1.medium", vcpus = 4, ram_mib = 16384, disk_gib = 50 }
+  worker_8g     = { name = "m1.worker-8g", vcpus = 4, ram_mib = 8192, disk_gib = 50 }
+}
+
+# Example only: reserve an unused range outside your LAN DHCP pool.
+external_network = {
+  name             = "public"
+  physical_network = "physnet1"
+  cidr             = "192.168.50.0/24"
+  gateway          = "192.168.50.1"
+  allocation_start = "192.168.50.200"
+  allocation_end   = "192.168.50.220"
+  dns_nameservers  = ["1.1.1.1", "8.8.8.8"]
+}

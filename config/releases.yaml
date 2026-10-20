@@ -1,0 +1,27 @@
+k3s:
+  version: v1.35.9+k3s1
+  binary_url: https://github.com/k3s-io/k3s/releases/download/v1.35.9%2Bk3s1/k3s
+  sha256: 897acb21cca57d477a211102251a6591450ce767344a9faaa121a1007ca9fa9a
+flux_version: v2.9.6
+cloud_controller_image: registry.k8s.io/provider-os/openstack-cloud-controller-manager:v1.35.0
+registry_image: registry:3.1.2
+demo_image: python:3.14.8-alpine
+ingress_chart_repository: https://kubernetes.github.io/ingress-nginx
+ingress_chart_version: 4.15.1
+source_url: http://platform-registry.flux-system.svc.cluster.local:5000
+source_oci_url: oci://platform-registry.flux-system.svc.cluster.local:5000/platform
+database:
+  chart_repository: https://cloudnative-pg.github.io/charts
+  operator_chart_version: 0.29.1
+  plugin_chart_version: 0.8.1
+  postgres_image: ghcr.io/cloudnative-pg/postgresql:18.6-system-trixie
+  cert_manager_chart_repository: https://charts.jetstack.io
+  cert_manager_chart_version: v1.21.2
+capi:
+  version: v1.14.3
+  capo_version: v0.15.0
+  kubernetes_version: v1.35.9
+  orc_version: v2.6.0
+  kind_image: kindest/node:v1.35.8@sha256:07b2536e30b803ed61d1677a79df6115f798ce64c80f9e22f6ed45afd09323c0
+  flannel_manifest: https://github.com/flannel-io/flannel/releases/download/v0.28.10/kube-flannel.yml
+  local_path_manifest: https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.37/deploy/local-path-storage.yaml

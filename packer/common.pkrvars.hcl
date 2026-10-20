@@ -1,0 +1,6 @@
+kubernetes_version         = "1.35.9"
+kubernetes_package_version = "1.35.9-1.1"
+containerd_package_version = "2.2.6-1~ubuntu.24.04~noble"
+build_date                 = "20261008"
+image_os_distro            = "ubuntu"
+image_os_version           = "24.04"

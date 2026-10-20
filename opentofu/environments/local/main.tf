@@ -1,0 +1,25 @@
+module "platform" {
+  bootstrap                = yamldecode(file("${path.root}/../../../config/releases.yaml")).k3s
+  source                   = "../../modules/platform"
+  s3                       = var.s3
+  name_prefix              = var.name_prefix
+  cidr                     = var.cidr
+  trusted_ca_certificates  = var.trusted_ca_certificates
+  dns_nameservers          = var.dns_nameservers
+  dns_routing_domains      = var.dns_routing_domains
+  external_network_name    = var.external_network_name
+  tags                     = var.tags
+  api_client_cidrs         = var.api_client_cidrs
+  admin_cidrs              = var.admin_cidrs
+  image_name               = var.image_name
+  flavor_map               = var.flavor_map
+  control_plane_size       = var.control_plane_size
+  worker_size              = var.worker_size
+  volume_availability_zone = var.volume_availability_zone
+  availability_zones       = var.availability_zones
+  ssh_public_key           = var.ssh_public_key
+  volume_type_map          = var.volume_type_map
+  volume_size_key          = var.volume_size_key
+  data_volume_size         = var.data_volume_size
+  enable_octavia           = var.enable_octavia
+}

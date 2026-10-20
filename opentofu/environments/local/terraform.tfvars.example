@@ -1,0 +1,22 @@
+# Example mapping only: verify networks, flavors, volume types and endpoints in your cloud.
+cloud                 = "local"
+name_prefix           = "openstack-talk-local"
+cidr                  = "172.29.80.0/24"
+external_network_name = "public"
+image_name            = "k8s-1.35.9-20261008"
+flavor_map            = { "SCS-2V-4-20" = "m1.small", "SCS-4V-16-50" = "m1.medium", "SCS-4V-8-50" = "m1.worker-8g" }
+volume_type_map       = { "standard" = "__DEFAULT__" }
+availability_zones    = []
+enable_octavia        = false
+dns_nameservers       = ["1.1.1.1", "8.8.8.8"]
+control_plane_size    = "SCS-2V-4-20"
+worker_size           = "SCS-4V-8-50"
+volume_size_key       = "standard"
+data_volume_size      = 10
+tags                  = ["openstack-talk", "phase-1"]
+
+s3 = { endpoint = "https://s3.example.com", region = "us-east-1", namespace = "REPLACE_UNIQUE_PROJECT_NAMESPACE" }
+
+# Replace with your public /32 and SSH public key; never use 0.0.0.0/0.
+admin_cidrs    = ["203.0.113.10/32"]
+ssh_public_key = "REPLACE_WITH_YOUR_OPENSSH_PUBLIC_KEY"

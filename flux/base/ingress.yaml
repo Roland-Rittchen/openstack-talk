@@ -1,0 +1,50 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: ingress
+  namespace: flux-system
+spec:
+  interval: 1h
+  url: ${INGRESS_CHART_REPOSITORY}
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ingress
+  namespace: ingress-system
+spec:
+  interval: 5m
+  timeout: 10m
+  chart:
+    spec:
+      chart: ingress-nginx
+      version: ${INGRESS_CHART_VERSION}
+      sourceRef:
+        kind: HelmRepository
+        name: ingress
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    controller:
+      replicaCount: 1
+      ingressClass: platform
+      ingressClassResource:
+        name: platform
+        default: true
+      allowSnippetAnnotations: false
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128Mi
+      service:
+        type: ${INGRESS_SERVICE_TYPE}
+        externalTrafficPolicy: Cluster
+        loadBalancerSourceRanges: ${LOAD_BALANCER_SOURCE_RANGES}
+        nodePorts:
+          http: 30080
+          https: 30443

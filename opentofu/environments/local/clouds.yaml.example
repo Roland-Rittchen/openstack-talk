@@ -1,0 +1,11 @@
+# Copy to clouds.yaml (gitignored), replace values, then chmod 600.
+clouds:
+  local:
+    auth_type: v3applicationcredential
+    auth:
+      auth_url: REPLACE_KEYSTONE_V3_URL
+      application_credential_id: REPLACE_APPLICATION_CREDENTIAL_ID
+      application_credential_secret: REPLACE_APPLICATION_CREDENTIAL_SECRET
+    region_name: REPLACE_REGION_NAME
+    interface: public
+    identity_api_version: 3

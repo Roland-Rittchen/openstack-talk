@@ -1,0 +1,23 @@
+# Copy to capi-values.yaml, edit, and apply to the management cluster.
+# UUIDs/flavors/key name come from `tofu output -json platform`.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: capi-values
+  namespace: flux-system
+data:
+  CLUSTER_NAME: demo-workload
+  CLOUD_NAME: local
+  KUBERNETES_VERSION: v1.35.9
+  NETWORK_ID: REPLACE_NETWORK_ID
+  SUBNET_ID: REPLACE_SUBNET_ID
+  EXTERNAL_NETWORK_ID: REPLACE_EXTERNAL_NETWORK_ID
+  CONTROL_PLANE_FLAVOR: REPLACE_CONTROL_PLANE_FLAVOR
+  WORKER_FLAVOR: REPLACE_WORKER_FLAVOR
+  IMAGE_ID: REPLACE_IMAGE_ID
+  SSH_KEY_NAME: REPLACE_SSH_KEY_NAME
+  CONTROL_PLANE_SECURITY_GROUP_ID: REPLACE_CONTROL_PLANE_SECURITY_GROUP_ID
+  WORKER_SECURITY_GROUP_ID: REPLACE_WORKER_SECURITY_GROUP_ID
+  # Union of admin_cidrs and the foundation's api_server_access_cidrs output.
+  # Include narrowly scoped management/node floating sources if hairpin routing needs them.
+  API_SERVER_ALLOWED_CIDRS: '["203.0.113.10/32", "172.29.80.0/24"]'

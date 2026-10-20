@@ -1,0 +1,22 @@
+# Example mapping only: verify networks, flavors, volume types and endpoints in your cloud.
+cloud                 = "scs"
+name_prefix           = "openstack-talk-scs"
+cidr                  = "172.29.82.0/24"
+external_network_name = "external"
+image_name            = "k8s-1.35.9-20261008"
+flavor_map            = { "SCS-2V-4-20" = "SCS-2V-4-20s", "SCS-4V-16-50" = "SCS-4V-16-50" }
+volume_type_map       = { "standard" = "__DEFAULT__" }
+availability_zones    = ["az1"]
+enable_octavia        = true
+dns_nameservers       = ["1.1.1.1", "8.8.8.8"]
+control_plane_size    = "SCS-2V-4-20"
+worker_size           = "SCS-4V-16-50"
+volume_size_key       = "standard"
+data_volume_size      = 10
+tags                  = ["openstack-talk", "phase-1"]
+
+s3 = { endpoint = "https://storage.occ2.scaleup.cloud", region = "us-east-1", namespace = "REPLACE_UNIQUE_PROJECT_NAMESPACE" }
+
+# Replace with your public /32 and SSH public key; never use 0.0.0.0/0.
+admin_cidrs    = ["203.0.113.10/32"]
+ssh_public_key = "REPLACE_WITH_YOUR_OPENSSH_PUBLIC_KEY"

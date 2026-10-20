@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: platform-values
+  namespace: flux-system
+data:
+  INGRESS_SERVICE_TYPE: NodePort
+  STORAGE_CLASS: local-path
+  DEMO_HOSTNAME: demo.openstack-talk.test
+  BACKUP_S3_ENDPOINT: https://s3.example.com
+  BACKUP_BUCKET: replace-with-backup-bucket
